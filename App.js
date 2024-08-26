@@ -6,7 +6,6 @@ import {
   View,
   SafeAreaView,
   StatusBar,
-  Pressable,
   Button,
   Alert,
 } from "react-native";
@@ -28,18 +27,21 @@ export default function App() {
       Alert.alert("Enter a number");
     } else {
       //get tip number
-      setTip((tipPer / 100) * subtotal);
+      let tipF = (tipPer / 100) * subtotal;
+      setTip(tipF.toFixed(2));
 
       //get total amount including tip
-      var totalF = parseFloat(subtotal) + parseFloat(tip);
+      let totalF = parseFloat(subtotal) + parseFloat(tip);
       console.log(totalF);
-      setTotal(totalF);
+      setTotal(totalF.toFixed(2));
 
       //get total per person without the tip
-      setETotal(subtotal / ppl);
+      let eTotalF = subtotal / parseFloat(ppl);
+      setETotal(eTotalF.toFixed(2));
 
       //get total per person with tip
-      setETotalTip(total / parseFloat(ppl));
+      let eTotalTipF = totalF / parseFloat(ppl);
+      setETotalTip(eTotalTipF.toFixed(2));
 
       //receipt will show after calculations
       setIsClicked(true);
@@ -49,19 +51,19 @@ export default function App() {
   function Receipt({ display }) {
     if (display) {
       return (
-        <View>
+        <View style={styles.parent}>
           <View style={styles.receipt}>
-            <Text style={styles.textT}>Subtotal: {subtotal}</Text>
+            <Text style={styles.textR}>Subtotal: {subtotal}</Text>
 
-            <Text style={styles.textT}>Tip: {tip}</Text>
+            <Text style={styles.textR}>Tip: {tip}</Text>
 
             <Text style={styles.total}>Total: {total}</Text>
 
-            <Text style={styles.subTitle}>Per Person</Text>
+            <Text style={styles.subtitle}>Per Person</Text>
 
-            <Text style={styles.textT}>Total: {eTotal}</Text>
+            <Text style={styles.textR}>Subtotal: {eTotal}</Text>
 
-            <Text style={styles.textT}>Total (With Tip): {eTotalTip}</Text>
+            <Text style={styles.total}>Total (With Tip): {eTotalTip}</Text>
           </View>
 
           <Button onPress={reset} title="Reset" />
@@ -116,7 +118,7 @@ export default function App() {
         </View>
       </View>
 
-      <Button onPress={calculate} title="Calculate" />
+      <Button style={styles.btn} onPress={calculate} title="Calculate" />
 
       <Receipt display={isClicked} />
     </SafeAreaView>
@@ -130,16 +132,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingTop: StatusBar.currentHeight,
+    padding: 10,
   },
   frow: {
     flex: 1,
     flexDirection: "row",
     alignContent: "center",
     justifyContent: "center",
-    marginStart: 15,
-    marginEnd: 15,
-    borderBlockColor: "white",
-    borderWidth: 2,
+    maxHeight: 150,
   },
   numView: {
     flex: 1,
@@ -155,4 +155,29 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
   },
+  textR: {
+    fontSize: 30,
+  },
+  subtitle: {
+    fontSize: 35,
+    textDecorationLine: "underline",
+    marginTop: 5,
+  },
+  total: {
+    fontWeight: "bold",
+    fontSize: 30,
+  },
+  parent: {
+    margin: 5,
+  },
+  receipt: {
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+    marginBottom: 15,
+    marginTop: 15,
+  },
+  /*btn{
+
+  }*/
 });
